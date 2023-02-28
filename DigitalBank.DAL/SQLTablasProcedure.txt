@@ -1,0 +1,92 @@
+DIGITALBANK BASE DE DATOS
+======================================
+
+CREATE DATABASE DIGITALBANK
+
+GO
+
+USE DIGITALBANK
+
+GO
+
+CREATE TABLE Usuarios
+(
+	IdUsuario int primary key identity(1,1),
+	Nombre varchar(100),
+	FechaNacimiento date,
+	Sexo char(1)
+)
+
+GO
+
+
+INSERT INTO Usuarios(Nombre, FechaNacimiento, Sexo) 
+Values('Jose Alberto Lopez','5-15-1980','M'),
+	  ('Maria Cristina Alonso','10-5-1970','F'),
+      ('Carolina Andrea Sabino','5-25-1985','F'),
+      ('Ricardo Ray','8-15-1958','M'),
+      ('Bobie Cruz','3-22-1960','M')
+
+GO
+
+CREATE PROC Sp_Usuario_Lista
+AS
+BEGIN
+	SELECT IdUsuario, 
+		   Nombre, 
+		   FechaNacimiento,
+		   Sexo
+	FROM Usuarios
+END
+
+GO
+
+
+CREATE PROC Sp_Usuario_Editar
+@IdUsuario int = null,
+@Nombre varchar(100) = null,
+@FechaNacimiento date = null,
+@Sexo char(1) = null
+
+AS
+BEGIN
+	UPDATE Usuarios SET Nombre = ISNULL(@Nombre, Nombre),
+						FechaNacimiento = ISNULL(@FechaNacimiento, FechaNacimiento),
+						Sexo = ISNULL(@Sexo, Sexo)
+	WHERE IdUsuario = @IdUsuario
+END
+
+
+GO
+
+CREATE PROC Sp_Usuario_Guardar
+@Nombre varchar(100) = null,
+@FechaNacimiento date = null,
+@Sexo char(1) = null
+
+AS
+BEGIN
+	INSERT INTO Usuarios (Nombre,FechaNacimiento,Sexo)
+	VALUES(@Nombre, @FechaNacimiento, @Sexo)
+	
+END
+
+
+GO
+
+
+CREATE PROC Sp_Usuario_Borrar
+@IdUsuario int = null
+
+AS
+BEGIN
+	DELETE FROM Usuarios WHERE IdUsuario = @IdUsuario 
+END
+
+GO
+
+
+
+
+
+
